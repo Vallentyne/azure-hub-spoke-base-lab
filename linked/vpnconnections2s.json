@@ -45,7 +45,8 @@
             "name": "[parameters('OnPremConnectionName')]",
             "location": "[variables('location')]",
             "comments": "This is the VPN connection from Gateway 1 to Gateway 2",
-            "properties": {
+            "properties": 
+            {
                 "virtualNetworkGateway1": {
                     "id": "[resourceId('Microsoft.Network/virtualNetworkGateways',parameters('OnPremGatewayName'))]"
                 },
@@ -63,7 +64,8 @@
             "name": "[parameters('AzureConnectionName')]",
             "location": "[variables('location')]",
             "comments": "This is the VPN connection from Gateway 2 to Gateway 1",
-            "properties": {
+            "properties": 
+            {
                 "virtualNetworkGateway1": {
                     "id": "[resourceId('Microsoft.Network/virtualNetworkGateways',parameters('AzureGatewayName'))]"
                 },

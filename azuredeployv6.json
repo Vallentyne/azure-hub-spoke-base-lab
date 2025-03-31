@@ -210,7 +210,7 @@
     },
     "variables": {
         "nsgname": "[concat(resourceGroup().location,'-default-nsg')]",
-        "artifactsLocation": "https://raw.githubusercontent.com/dmauser/azure-hub-spoke-base-lab/main/linked/",
+        "artifactsLocation": "https://raw.githubusercontent.com/vallentyne/azure-hub-spoke-base-lab/main/linked/",
         "erconnURI": "[concat(uri(variables('artifactsLocation'),'erconnection.json'))]",
         "ergwtemplateURI": "[concat(uri(variables('artifactsLocation'),'ergw.json'))]",
         "nsgtemplateURI": "[concat(uri(variables('artifactsLocation'),'nsg2.json'))]",
@@ -218,7 +218,7 @@
         "azurevnettemplateURI": "[concat(uri(variables('artifactsLocation'),'vnet-azurev3.json'))]",
         "spokevnettemplateURI": "[concat(uri(variables('artifactsLocation'),'vnet-spokev2.json'))]",
         "vpngwtemplateURI": "[concat(uri(variables('artifactsLocation'),'new-vpngw.json'))]",
-        "vpnconnURI": "[concat(uri(variables('artifactsLocation'),'vpnconnection.json'))]",
+        "vpnconnURI": "[concat(uri(variables('artifactsLocation'),'vpnconnections2s.json'))]",
         "routeServerURI": "[concat(uri(variables('artifactsLocation'),'routeserver.json'))]",
         "vmtemplateURI": "[concat(uri(variables('artifactsLocation'),'vmv2.json'))]",
         "vmnopiptemplateURI": "[concat(uri(variables('artifactsLocation'),'vm-nopip.json'))]",
@@ -230,7 +230,8 @@
             "gatewayName": "[concat(parameters('Onprem').name,'-vpngw')]",
             "HubVPNGatewaytype": "Active-Passive",
             "gatewayPublicIPName": "[concat(parameters('Onprem').name,'-vpngw-pip')]",
-            "connectionName": "[concat(parameters('Onprem').name,'-to-',concat(parameters('Azure').hubname))]"
+            "connectionName": "[concat(parameters('Onprem').name,'-to-',concat(parameters('Azure').hubname))]",
+            "LNGOnPrem": "LNGOnprem"
         },
         "Azure": {
             "subnetName": "subnet1",
@@ -239,6 +240,7 @@
             "gatewayPublicIPName1": "[concat(parameters('Azure').hubname,'-vpngw-pip1')]",
             "gatewayPublicIPName2": "[concat(parameters('Azure').hubname,'-vpngw-pip2')]",
             "connectionName": "[concat(parameters('Azure').hubname,'-to-',concat(parameters('Onprem').name))]",
+            "LNGAzure": "lngazure",
             "asn": "65515",
             "routeserverName": "[concat(parameters('Azure').hubname,'-rs')]",
             "routeserverSubnetName": "RouteServerSubnet",
@@ -638,7 +640,8 @@
                 "[resourceId('Microsoft.Resources/deployments', variables('OnPrem').gatewayName)]",
                 "[resourceId('Microsoft.Resources/deployments', variables('Azure').gatewayName)]"
             ],
-            "properties": {
+            "properties": 
+            {
                 "mode": "Incremental",
                 "templateLink": {
                     "uri": "[variables('vpnconnURI')]",
@@ -651,6 +654,9 @@
                     "OnPremGatewayName": {
                         "value": "[variables('OnPrem').gatewayName]"
                     },
+                    "LNGAzure": {
+                        "value": "[variables('Azure').LNGAzure]"
+                    },
                     "OnPremConnectionName": {
                         "value": "[variables('OnPrem').connectionName]"
                     },
@@ -659,6 +665,9 @@
                     },
                     "AzureConnectionName": {
                         "value": "[variables('Azure').connectionName]"
+                    },
+                    "LNGOnprem": {
+                        "value": "[variables('OnPrem').LNGOnPrem]"
                     }
                 }
             }

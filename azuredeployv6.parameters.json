@@ -6,7 +6,7 @@
             "value": "covallenadmin" // TODO: Fill in parameter value
         },
         "VmAdminPassword": {
-            "value": "TheKill3rs!!!!" // TODO: Fill in parameter value
+            "value": "" // TODO: Fill in parameter value
         },
         "virtualMachineSize": {
             "value": "Standard_B1ms"
